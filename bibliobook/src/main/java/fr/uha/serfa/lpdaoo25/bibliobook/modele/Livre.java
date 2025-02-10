@@ -1,6 +1,8 @@
 package fr.uha.serfa.lpdaoo25.bibliobook.modele;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Livre {
     private String titulo       = "";
@@ -34,6 +36,11 @@ public class Livre {
 
     public Auteur getAuthora() {
         return authora;
+    }
+
+    public void setAuthora(Auteur a) {
+        this.authora = a;
+        a.addLivre(this);
     }
 
     @Override

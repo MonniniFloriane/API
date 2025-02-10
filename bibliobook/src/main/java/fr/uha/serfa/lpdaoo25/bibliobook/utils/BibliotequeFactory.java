@@ -1,8 +1,10 @@
 package fr.uha.serfa.lpdaoo25.bibliobook.utils;
 
+import fr.uha.serfa.lpdaoo25.bibliobook.controller.vueSecu.LivreSansAuthor;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Auteur;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Biblioteque;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Livre;
+import net.datafaker.Faker;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +13,27 @@ import java.util.Optional;
 
 public class BibliotequeFactory {
     private static Optional<Biblioteque> bibSingleton = Optional.empty();
+
+    public static Biblioteque addRamdomBook(int nbrAdded) {
+        Biblioteque b = getBigBibliotheque();
+        Faker faker   = new Faker();
+
+        for (int i = 0; i < nbrAdded; i++) {
+            String nom    = faker.funnyName().name();
+            String prenom = faker.funnyName().name();
+            LocalDate naissance = faker.timeAndDate().birthday(18, 60);
+            Auteur auteur = new Auteur(nom, prenom, naissance);
+
+            //donner livre
+            String titre = faker.book().title();
+            String isbn = faker.code().isbn10();
+            LocalDate datePubli = faker.timeAndDate().birthday(18, 60);
+            Livre livre = new Livre(titre, isbn, datePubli, auteur);
+
+            b.getLivres().add(livre);
+        }
+        return b;
+    }
 
     public static Biblioteque getBigBibliotheque() {
         if (bibSingleton.isPresent()) {
@@ -60,6 +83,10 @@ public class BibliotequeFactory {
         livres.add(new Livre("L'énigme de la pyramide", "XYZA901", LocalDate.of(1993, 4, 20), auteurs.get(7)));
         livres.add(new Livre("Le trésor caché", "BCDE234", LocalDate.of(1992, 3, 25), auteurs.get(8)));
         livres.add(new Livre("Les mystères de l'espace", "FGHI567", LocalDate.of(1991, 2, 25), auteurs.get(9)));
+
+//        List<LivreSansAuthor> livresSansAuth = new ArrayList<>();
+//        livresSansAuth.add(new LivreSansAuthor("Evasion et retrouvailles", "OAYX083", LocalDate.of(2020, 10, 11));
+//        livresSansAuth.add(new LivreSansAuthor("Aventure en mer", "BXYA123", LocalDate.of(2019, 5, 20));
 
         Biblioteque b = new Biblioteque("10 rue du livre", "Bibliothèque", livres);
         bibSingleton = Optional.of(b);

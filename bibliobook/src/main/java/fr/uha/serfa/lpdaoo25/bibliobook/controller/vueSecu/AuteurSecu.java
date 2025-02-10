@@ -2,6 +2,7 @@ package fr.uha.serfa.lpdaoo25.bibliobook.controller.vueSecu;
 
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Auteur;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Livre;
+import net.datafaker.Faker;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

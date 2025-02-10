@@ -5,6 +5,9 @@ import fr.uha.serfa.lpdaoo25.bibliobook.modele.Auteur;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Biblioteque;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Livre;
 import fr.uha.serfa.lpdaoo25.bibliobook.utils.BibliotequeFactory;
+import net.datafaker.Faker;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -18,7 +21,12 @@ import java.util.List;
 public class BiblioController {
 
     public BiblioController() {
-        System.err.println("Hello World Control");
+        Faker faker = new Faker();
+        System.out.println(faker.gender().types());
+        System.out.println(faker.beer().name());
+        System.out.println(faker.bojackHorseman().quotes());
+        System.out.println(faker.community().quote());
+        System.out.println(faker.emoji().cat());
     }
 
     @GetMapping("/")
@@ -62,12 +70,35 @@ public class BiblioController {
         return auteurSecuList;
     }
 
+    @GetMapping("/livre/randomName")
+    public Biblioteque addRandomAuteur() {
+        Biblioteque b = BibliotequeFactory.getBigBibliotheque();
+        BibliotequeFactory.addRamdomBook(10);
+        return b;
+    }
+
     @PostMapping("/livre")
     public Biblioteque addLivre(@RequestBody Livre livre) {
         Biblioteque b = BibliotequeFactory.getBigBibliotheque();
         b.getLivres().add(livre);
         return b;
     }
+
+    @PostMapping("/livre/{authorName}")
+    public ResponseEntity<Biblioteque> addLivreSecure(@RequestBody Livre livre, @PathVariable(value= "authorName") String authorName) {
+        Biblioteque b = BibliotequeFactory.getBigBibliotheque();
+        Set<Auteur> auteurs = b.authorByName(authorName);
+
+        for (Auteur a : auteurs) {
+            if(a.getNom().equals(authorName)) {
+                b.getLivres().add(livre);
+                livre.setAuthora(a);
+                return new ResponseEntity<>(b, HttpStatus.CREATED);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @GetMapping("/livre")
     public Livre getLivre() {
