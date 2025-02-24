@@ -5,63 +5,44 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Usager {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(unique = true, nullable = false)
-    private Long id;
+public class Usager extends Utilisateur{
 
-    private String nom;
-    private String prenom;
-    private LocalDate naissance;
-    private int nbrEmprunt;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Livre emprunt;
+
+    public Livre getEmprunt() {
+        return emprunt;
+    }
+
+    public void setEmprunt(Livre emprunt) {
+        this.emprunt = emprunt;
+    }
 
     public Usager() {}
 
-    public Usager(String nom, String prenom, LocalDate naissance, int nbrEmprunt) {
+    public Usager(String nom, String prenom, LocalDate naissance) {
         this.nom = nom;
         this.prenom = prenom;
-        this.naissance = naissance;
-        this.nbrEmprunt = nbrEmprunt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public LocalDate getNaissance() {
-        return naissance;
-    }
-
-    public void setNaissance(LocalDate naissance) {
-        this.naissance = naissance;
+        this.dateNaissance = naissance;
     }
 
     public int getNbrEmprunt() {
-        return nbrEmprunt;
+        if(this.hasLivreEmprunt())
+            return 1;
+        return 0;
     }
 
-    public void setNbrEmprunt(int nbrEmprunt) {
-        this.nbrEmprunt = nbrEmprunt;
+    public boolean hasLivreEmprunt() {
+        return this.emprunt == null;
+    }
+
+    @Override
+    public String toString() {
+        return "Usager {" +
+                "id        : " + id + "\n" +
+                "nom       : " + nom + "\n" +
+                "prenom    : " + prenom + "\n" +
+                "naissance : " + dateNaissance;
     }
 }

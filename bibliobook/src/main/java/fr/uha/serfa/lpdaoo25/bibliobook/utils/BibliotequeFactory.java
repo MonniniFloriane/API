@@ -1,6 +1,5 @@
 package fr.uha.serfa.lpdaoo25.bibliobook.utils;
 
-import fr.uha.serfa.lpdaoo25.bibliobook.controller.vueSecu.LivreSansAuthor;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Auteur;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Biblioteque;
 import fr.uha.serfa.lpdaoo25.bibliobook.modele.Livre;
@@ -13,27 +12,6 @@ import java.util.Optional;
 
 public class BibliotequeFactory {
     private static Optional<Biblioteque> bibSingleton = Optional.empty();
-
-    public static Biblioteque addRamdomBook(int nbrAdded) {
-        Biblioteque b = getBigBibliotheque();
-        Faker faker   = new Faker();
-
-        for (int i = 0; i < nbrAdded; i++) {
-            String nom    = faker.funnyName().name();
-            String prenom = faker.funnyName().name();
-            LocalDate naissance = faker.timeAndDate().birthday(18, 60);
-            Auteur auteur = new Auteur(nom, prenom, naissance);
-
-            //donner livre
-            String titre = faker.book().title();
-            String isbn = faker.code().isbn10();
-            LocalDate datePubli = faker.timeAndDate().birthday(18, 60);
-            Livre livre = new Livre(titre, isbn, datePubli, auteur);
-
-            b.getLivres().add(livre);
-        }
-        return b;
-    }
 
     public static Biblioteque getBigBibliotheque() {
         if (bibSingleton.isPresent()) {
@@ -92,4 +70,25 @@ public class BibliotequeFactory {
         bibSingleton = Optional.of(b);
         return b;
     }
-}
+
+        public static Biblioteque addRamdomBook(int nbrAdded) {
+            Biblioteque b = getBigBibliotheque();
+            Faker faker   = new Faker();
+
+            for (int i = 0; i < nbrAdded; i++) {
+                String nom    = faker.funnyName().name();
+                String prenom = faker.funnyName().name();
+                LocalDate naissance = faker.timeAndDate().birthday(18, 60);
+                Auteur auteur = new Auteur(nom, prenom, naissance);
+
+                //donner livre
+                String titre = faker.book().title();
+                String isbn = faker.code().isbn10();
+                LocalDate datePubli = faker.timeAndDate().birthday(18, 60);
+                Livre livre = new Livre(titre, isbn, datePubli, auteur);
+
+                b.getLivres().add(livre);
+            }
+            return b;
+        }
+    }

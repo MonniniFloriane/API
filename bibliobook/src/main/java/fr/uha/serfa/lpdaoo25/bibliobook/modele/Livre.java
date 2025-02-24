@@ -1,14 +1,22 @@
 package fr.uha.serfa.lpdaoo25.bibliobook.modele;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
+@Entity
 public class Livre {
+    @Id
+    @GeneratedValue
+    private int idLivre;
+
     private String titulo       = "";
     private String isbn         = "";
     private LocalDate datePubli = LocalDate.of(0, 1, 1);
-    private Auteur authora      = new Auteur();
+
+    @ManyToOne
+    @JoinColumn(name = "author_ID")
+    private Auteur authora = new Auteur();
 
     public Livre() {
         this.authora.addLivre(this);
@@ -50,5 +58,13 @@ public class Livre {
                 "isbn=" + isbn + '\n' +
                 "authora=" + authora + '\n' +
                 '}';
+    }
+
+    public int getIdLivre() {
+        return idLivre;
+    }
+
+    public void setIdLivre(int idLivre) {
+        this.idLivre = idLivre;
     }
 }

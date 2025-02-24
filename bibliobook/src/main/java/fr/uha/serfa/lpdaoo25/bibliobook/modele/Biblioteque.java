@@ -13,7 +13,7 @@ public class Biblioteque  {
 
     public Biblioteque(){
         livres.add(new Livre());
-        livres.add(new Livre("Jardinage", "IS56", LocalDate.of(1996,03,05), new Auteur()));
+        livres.add(new Livre("Jardinage", "IS56", LocalDate.of(1996,3,5), new Auteur("Jean", "Jean", LocalDate.now())));
     }
 
     public Biblioteque(String adress, String nom, List<Livre> livres) {
@@ -51,10 +51,5 @@ public class Biblioteque  {
             };
         }
         return auteursName;
-    }
-
-    @Override
-    public String toString() {
-        return "Biblioteque{" + "adress=" + adress + ", nom=" + nom + ", livres=" + livres + '}';
     }
 }
